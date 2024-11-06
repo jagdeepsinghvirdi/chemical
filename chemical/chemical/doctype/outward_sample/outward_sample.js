@@ -33,15 +33,15 @@ cur_frm.fields_dict.link_to.get_query = function (doc) {
 
 // Add searchfield to customer  and Supplier and item query
 cur_frm.cscript.onload = function (frm) {
-	// cur_frm.set_query("product_name", function () {
-	// 	return {
-	// 		query: "chemical.query.new_item_query",
-	// 		filters: {
-	// 			'is_sales_item': 1,
-	// 			"item_group": "FINISHED DYES"
-	// 		}
-	// 	}
-	// });
+	cur_frm.set_query("item_code", function () {
+		return {
+			query: "chemical.query.new_item_query",
+			filters: {
+				'is_sales_item': 1,
+				"item_group": "FINISHED DYES"
+			}
+		}
+	});
 	cur_frm.set_query("party", function (frm) {
 		if (cur_frm.doc.link_to == 'Customer') {
 			return {
@@ -77,20 +77,20 @@ cur_frm.cscript.onload = function (frm) {
 			}
 		}
 	});
-	// cur_frm.set_query("batch_no", "details", function(doc, cdt, cdn) {
-	// 	let d = locals[cdt][cdn];
-	// 	if(!d.item_name){
-	// 		frappe.msgprint(__("Please select Item"));
-	// 	}
-	// 	else{
-	// 		return {
-	// 			query: "chemical.query.get_outward_sample_batch_no",
-	// 			filters: {
-	// 				'item_name': d.item_name,
-	// 			}
-	// 		}
-	// 	}
-	// });
+	cur_frm.set_query("batch_no", "details", function(doc, cdt, cdn) {
+		let d = locals[cdt][cdn];
+		if(!d.item_name){
+			frappe.msgprint(__("Please select Item"));
+		}
+		else{
+			return {
+				query: "chemical.query.get_outward_sample_batch_no",
+				filters: {
+					'item_name': d.item_name,
+				}
+			}
+		}
+	});
 }
 
 frappe.ui.form.on('Outward Sample', {
@@ -100,11 +100,11 @@ frappe.ui.form.on('Outward Sample', {
 		//frm.trigger("cal_rate");
 		frm.trigger("cal_amount");
 		frm.trigger("cal_per_unit_price");
-		if (frm.doc.link_to == 'Customer' && frm.doc.product_name) {
+		if (frm.doc.link_to == 'Customer' && frm.doc.item_code) {
 			frappe.call({
 				method: 'chemical.api.get_customer_ref_code',
 				args: {
-					'item_code': frm.doc.product_name,
+					'item_code': frm.doc.item_code,
 					'customer': frm.doc.party,
 				},
 				callback: function (r) {
@@ -118,7 +118,7 @@ frappe.ui.form.on('Outward Sample', {
 			frappe.call({
 				method: 'chemical.api.get_supplier_ref_code',
 				args: {
-					'item_code': frm.doc.product_name,
+					'item_code': frm.doc.item_code,
 					'supplier': frm.doc.party
 				},
 				callback: function (r) {
@@ -307,6 +307,7 @@ frappe.ui.form.on("Outward Sample Detail", {
 		frm.events.cal_total_qty(frm);
 	},
 	item_code: function (frm, cdt, cdn) {
+		var existing_inward_sample = m.inward_sample;
 		var m = locals[cdt][cdn];
 		if (m.item_code) {
 			frm.call({
@@ -320,11 +321,11 @@ frappe.ui.form.on("Outward Sample Detail", {
 				callback: function (r) {
 					frappe.model.set_value(m.doctype, m.name, 'rate', r.message.price_list_rate);
 					frappe.model.set_value(m.doctype, m.name, 'price_list_rate', r.message.price_list_rate);
-					frm.events.cal_yield(frm);
+					frappe.model.set_value(m.doctype, m.name, 'inward_sample', existing_inward_sample);
+					frm.events.cal_yield(frm); 
 				}
 			});
 		}
-		
 	},
 	bom_no: function(frm, cdt, cdn){
 		let d = locals[cdt][cdn]
@@ -336,4 +337,5 @@ frappe.ui.form.on("Outward Sample Detail", {
 		}
 	}
 });
+
 

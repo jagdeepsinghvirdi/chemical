@@ -46,7 +46,7 @@ class OutwardSample(Document):
                     company=self.company,
                 )
                 if price.price_list_rate:
-                    rate = price.price_list_rate * concentration / 100
+                    rate = flt(price.price_list_rate) * flt(concentration) / 100
                     row.db_set("rate", rate)
                     row.db_set("price_list_rate", price.price_list_rate)
 
