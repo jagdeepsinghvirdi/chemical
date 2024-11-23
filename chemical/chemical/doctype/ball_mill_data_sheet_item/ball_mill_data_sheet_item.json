@@ -8,6 +8,7 @@
   "source_warehouse",
   "item_name",
   "batch_yield",
+  "cost_center",
   "batch_no",
   "lot_no",
   "packing_size",
@@ -152,11 +153,17 @@
    "in_list_view": 1,
    "label": "Lot No",
    "read_only": 1
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center"
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2024-06-21 15:11:50.132827",
+ "modified": "2024-11-23 11:58:20.684003",
  "modified_by": "Administrator",
  "module": "Chemical",
  "name": "Ball Mill Data Sheet Item",

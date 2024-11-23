@@ -18,6 +18,14 @@ cur_frm.fields_dict.warehouse.get_query = function(doc) {
 		}
 	}
 };
+cur_frm.fields_dict.cost_center.get_query = function(doc) {
+	return {
+		filters: {
+			"is_group": 0,
+			'company': doc.company
+		}
+	}
+};
 cur_frm.fields_dict.items.grid.get_field("source_warehouse").get_query = function(doc) {
 	return {
 		filters: {
@@ -26,7 +34,14 @@ cur_frm.fields_dict.items.grid.get_field("source_warehouse").get_query = functio
 		}
 	};
 };
-
+cur_frm.fields_dict.items.grid.get_field("cost_center").get_query = function(doc) {
+	return {
+		filters: {
+			  "is_group": 0,
+			  'company': doc.company
+		}
+	};
+};
 // cur_frm.fields_dict.sample_no.get_query = function(doc) {
 // 	return {
 // 		filters: {

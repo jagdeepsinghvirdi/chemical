@@ -12,6 +12,7 @@
   "customer_name",
   "product_name",
   "warehouse",
+  "cost_center",
   "target_qty",
   "column_break_4",
   "date",
@@ -307,12 +308,18 @@
    "fieldtype": "Link",
    "label": "Branch",
    "options": "Branch"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Target Cost Center",
+   "options": "Cost Center"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-21 13:34:02.404912",
+ "modified": "2024-11-23 11:58:50.501085",
  "modified_by": "Administrator",
  "module": "Chemical",
  "name": "Ball Mill Data Sheet",

@@ -187,7 +187,7 @@ class BallMillDataSheet(Document):
 			se.posting_time = self.posting_time
 			se.from_ball_mill = 1
 			se.branch = self.branch
-			cost_center = frappe.db.get_value("Company",self.company,"cost_center")
+			cost_center = self.cost_center or frappe.db.get_value("Company",self.company,"cost_center")
 			if hasattr(self,'send_to_party'):
 				se.send_to_party = self.send_to_party
 			if hasattr(self,'party_type'):
@@ -206,7 +206,7 @@ class BallMillDataSheet(Document):
 					'uom':frappe.db.get_value("Item",row.item_name,"stock_uom"),
 					'stock_uom':frappe.db.get_value("Item",self.product_name,"stock_uom"),
 					'basic_amount': row.basic_amount,
-					'cost_center': item.get("buying_cost_center") or item.get("selling_cost_center") or cost_center,
+					'cost_center': row.cost_center or item.get("buying_cost_center") or item.get("selling_cost_center") or cost_center,
 					'batch_no': row.batch_no,
 					'concentration':row.concentration,
 					'packaging_material':row.packaging_material,
@@ -237,7 +237,7 @@ class BallMillDataSheet(Document):
 					'basic_rate': self.per_unit_amount,
 					'valuation_rate': self.per_unit_amount,
 					'basic_amount': flt(d.qty * self.per_unit_amount),
-					'cost_center': item.get("buying_cost_center") or item.get("selling_cost_center") or cost_center,
+					'cost_center': self.cost_center or item.get("buying_cost_center") or item.get("selling_cost_center") or cost_center,
 					'uv_value':self.get("weighted_average_uv_value")
 				}
 
