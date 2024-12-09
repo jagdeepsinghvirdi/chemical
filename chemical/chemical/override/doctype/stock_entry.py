@@ -26,7 +26,7 @@ def add_additional_cost(doc, self, qty=None):
 			qty = flt(doc.fg_completed_qty if maintain_as_is_new else doc.fg_completed_quantity)
 			additional_cost_dict['uom'] = "FG QTY"
 		else:
-			qty = (qty *flt(additional_cost.qty)) / flt(bom.qty) if maintain_as_is_new else (qty *flt(additional_cost.qty)) / flt(bom.quantity)
+			qty = (qty *flt(additional_cost.qty)) / flt(bom.quantity) if maintain_as_is_new else (qty *flt(additional_cost.qty)) / flt(bom.quantity)
 		
 		additional_cost_dict["expense_account"] = 'Expenses Included In Valuation - {}'.format(abbr)
 		additional_cost_dict["description"] = additional_cost.description
