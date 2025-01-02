@@ -402,7 +402,7 @@ def cal_target_yield_cons(self):
 		finished_qty = 0
 		if self.based_on in items_list: 
 			for row in self.items:
-				if row.t_warehouse:
+				if row.t_warehouse and row.is_finished_item:
 					finished_qty += row.qty
 					row.batch_yield = flt(row.qty / item_map[self.based_on]['qty'])
 

@@ -147,12 +147,12 @@ class StockEntry(_StockEntry):
 		if self.process_loss_qty:
 			total += flt(self.process_loss_qty, precision)
 
-			if self.fg_completed_qty != total:
-				frappe.throw(
-					_(
-						"The finished product {0} quantity {1} and For Quantity {2} cannot be different"
-					).format(frappe.bold(item_code), frappe.bold(total), frappe.bold(self.fg_completed_qty))
-				)
+		if self.fg_completed_qty != total:
+			frappe.throw(
+				_(
+					"The finished product quantity {0} and For Quantity {1} cannot be different"
+				).format(frappe.bold(total), frappe.bold(self.fg_completed_qty))
+			)
 
 	@frappe.whitelist()
 	def get_items(self):

@@ -151,7 +151,7 @@ def data_query(filters):
 
     # sub query to find transferred quantity of item used for manufacturing
     for item in data:
-        frappe.msgprint(str(item))
+        # frappe.msgprint(str(item))
         if finish_quantity is not None:
             item['per_unit_price'] = item['total_additional_costs'] * finish_quantity
         produced_qty = item.get('produced_qty', 0)

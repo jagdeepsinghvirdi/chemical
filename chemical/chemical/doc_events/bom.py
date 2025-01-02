@@ -13,6 +13,10 @@ def bom_validate(self, method):
 	cost_calculation(self)
 	set_fg_qty_in_additional_cost(self)
 	_update_bom_cost(self)
+	amount=0
+	for row in self.items:
+		amount += row.amount
+	self.raw_material_cost = amount
 
 def bom_before_save(self, method):
 	multiple_finish_item(self)
