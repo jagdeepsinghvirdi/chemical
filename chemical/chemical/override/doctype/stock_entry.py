@@ -140,12 +140,12 @@ class StockEntry(_StockEntry):
 		for item_code, qty_list in item_wise_qty.items():
 			total += flt(sum(qty_list), precision)
 
-		if (flt(self.fg_completed_qty) - total) > 0 and not self.process_loss_qty:
-			self.process_loss_qty = flt(self.fg_completed_qty - total, precision)
-			self.process_loss_percentage = flt(self.process_loss_qty * 100 / self.fg_completed_qty)
+			if (flt(self.fg_completed_qty) - total) > 0 and not self.process_loss_qty:
+				self.process_loss_qty = flt(self.fg_completed_qty - total, precision)
+				self.process_loss_percentage = flt(self.process_loss_qty * 100 / self.fg_completed_qty)
 
-		if self.process_loss_qty:
-			total += flt(self.process_loss_qty, precision)
+			if self.process_loss_qty:
+				total += flt(self.process_loss_qty, precision)
 
 		if self.fg_completed_qty != total:
 			frappe.throw(
