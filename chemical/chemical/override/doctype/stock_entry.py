@@ -138,7 +138,6 @@ class StockEntry(_StockEntry):
 		precision = frappe.get_precision("Stock Entry Detail", "qty")
 		total = 0
 		for item_code, qty_list in item_wise_qty.items():
-			frappe.throw(str(item_wise_qty.items()))
 			total += flt(sum(qty_list), precision)
 
 		if (flt(self.fg_completed_qty) - total) > 0 and not self.process_loss_qty:
