@@ -27,14 +27,13 @@ def add_additional_cost(doc, self, qty=None):
 			additional_cost_dict['uom'] = "FG QTY"
 		else:
 			qty = (qty *flt(additional_cost.qty)) / flt(bom.quantity) if maintain_as_is_new else (qty *flt(additional_cost.qty)) / flt(bom.quantity)
-		
-		additional_cost_dict["expense_account"] = 'Expenses Included In Valuation - {}'.format(abbr)
+		# fetch expense_account from bom if not then fetch defaut account 
+		additional_cost_dict["expense_account"] = additional_cost.account or 'Expenses Included In Valuation - {}'.format(abbr)
 		additional_cost_dict["description"] = additional_cost.description
 		additional_cost_dict["qty"] = qty
 		additional_cost_dict["rate"] = additional_cost.rate
 		additional_cost_dict["amount"] = qty * flt(additional_cost.rate)
 		additional_cost_dict["base_amount"] = qty * flt(additional_cost.rate)
-		
 		doc.append("additional_costs", additional_cost_dict)
 
 def get_available_materials(company, work_order) -> dict:
