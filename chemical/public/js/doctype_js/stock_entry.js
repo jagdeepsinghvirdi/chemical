@@ -62,12 +62,12 @@ frappe.ui.form.on("Stock Entry", {
         frappe.run_serially([
             () => {
                 frm.doc.items.forEach(function(d) {
-                    frm.events.set_basic_rate(frm, d.doctype, d.date)
+                    frm.events.set_basic_rate(frm, d.doctype, d.name)
                 });
             },
             () => {
                 frm.doc.items.forEach(function(d) {
-                    frm.events.calculate_qty(frm, d.doctype, d.date)
+                    frm.events.calculate_qty(frm, d.doctype, d.name)
                 });
             }
         ])
@@ -75,7 +75,7 @@ frappe.ui.form.on("Stock Entry", {
     set_basic_rate: function (frm, cdt, cdn) {
         const item = locals[cdt][cdn];
         if (item.t_warehouse) {
-            return
+            return;
         }
         item.transfer_qty = flt(item.qty) * flt(item.conversion_factor);
 
