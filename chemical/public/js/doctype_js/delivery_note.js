@@ -87,6 +87,14 @@ frappe.ui.form.on("Delivery Note", {
             });
             frm.refresh_field('items');
         }
+        frm.posting_date = frm.doc.posting_date
+        frm.posting_time = frm.doc.posting_time
+    },
+    posting_date: function(frm){
+        frm.posting_date = frm.doc.posting_date
+    },
+    posting_time: function(frm){
+        frm.posting_time = frm.doc.posting_time
     },
     before_save: function (frm) {
 
@@ -324,13 +332,14 @@ frappe.ui.form.on("Delivery Note Item", {
 
     batch_no: function (frm, cdt, cdn) {
         let d = locals[cdt][cdn];
-        frappe.db.get_value("Batch", d.batch_no, ['packaging_material', 'packing_size', 'lot_no', 'batch_yield', 'concentration'], function (r) {
+        frappe.db.get_value("Batch", d.batch_no, ['packaging_material', 'packing_size', 'lot_no', 'batch_yield', 'concentration', 'valuation_rate'], function (r) {
             console.log(r.packing_size)
             frappe.model.set_value(cdt, cdn, 'packaging_material', r.packaging_material);
             frappe.model.set_value(cdt, cdn, 'packing_size', r.packing_size);
             frappe.model.set_value(cdt, cdn, 'lot_no', r.lot_no);
             frappe.model.set_value(cdt, cdn, 'batch_yield', r.batch_yield);
             frappe.model.set_value(cdt, cdn, 'concentration', r.concentration);
+            frappe.model.set_value(cdt, cdn, 'rate', r.valuation_rate);
         });
     }
 });
