@@ -355,8 +355,10 @@ frappe.ui.form.on("Delivery Note Item", {
                 "allow_zero_valuation_rate": d.allow_zero_valuation_rate
             }
         }).then(rate=>{
+            if (frm.doc.is_internal_customer){
             frappe.model.set_value(cdt, cdn, 'rate', rate);
             frappe.model.set_value(cdt, cdn, 'incoming_rate', rate);
+            }
         })
 
     }
