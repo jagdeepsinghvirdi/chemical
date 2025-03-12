@@ -273,7 +273,7 @@ frappe.ui.form.on('Ball Mill Data Sheet', {
 					frappe.model.set_value(d.doctype, d.name, 'qty', flt(d.packing_size) * flt(d.no_of_packages));
 				}
 				else{
-					if (r.maintain_as_is_stock) {
+					if (r.maintain_as_is_stock && !d.ignore_calculation) {
 						if (d.qty){
 							frappe.model.set_value(d.doctype, d.name, 'quantity', (flt(d.qty)*flt(concentration)) / 100);
 						}
@@ -329,7 +329,7 @@ frappe.ui.form.on('Ball Mill Data Sheet', {
 				var concentration = frm.doc.concentration || 100
 				if (d.packing_size && d.no_of_packages){
 					frappe.model.set_value(d.doctype, d.name, 'qty', (flt(d.packing_size) * flt(d.no_of_packages)));
-					if (r.maintain_as_is_stock) {
+					if (r.maintain_as_is_stock && !d.ignore_calculation) {
 						frappe.model.set_value(d.doctype, d.name, 'qty', (flt(d.qty) * flt(concentration))/100);
 					}
 					else{
@@ -337,7 +337,8 @@ frappe.ui.form.on('Ball Mill Data Sheet', {
 					}
 				}
 				else{
-					if (r.maintain_as_is_stock) {
+					if (r.maintain_as_is_stock && !d.ignore_calculation) {
+						console.log("hello")
 						if (d.qty){
 							frappe.model.set_value(d.doctype, d.name, 'qty', (flt(d.qty)*flt(concentration)) / 100);
 						}

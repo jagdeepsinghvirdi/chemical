@@ -145,12 +145,12 @@ class BallMillDataSheet(Document):
 				if d.get('packing_size') and d.get('no_of_packages'):
 					d.qty = (d.packing_size * d.no_of_packages)
 
-					if maintain_as_is_stock:
+					if maintain_as_is_stock  and not d.ignore_calculation:
 						d.qty = flt(d.qty) * flt(concentration) / 100
 						
 						
 				else:
-					if maintain_as_is_stock:
+					if maintain_as_is_stock  and not d.ignore_calculation:
 					
 						if d.qty:
 							d.qty = flt(d.qty) * flt(concentration) / 100.0
@@ -160,13 +160,13 @@ class BallMillDataSheet(Document):
 				if d.get('packing_size') and d.get('no_of_packages'):
 					d.qty = d.packing_size * d.no_of_packages
 
-					if maintain_as_is_stock:
+					if maintain_as_is_stock and not d.ignore_calculation:
 						if d.qty:
 							d.qty = flt(d.qty) * flt(d.concentration) / 100.0
 
 					
 				else:
-					if maintain_as_is_stock:
+					if maintain_as_is_stock and not d.ignore_calculation:
 						if d.qty:
 							d.qty = flt(d.qty) * flt(d.concentration) / 100.0
 							
