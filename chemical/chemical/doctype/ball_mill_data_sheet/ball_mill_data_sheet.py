@@ -239,32 +239,32 @@ class BallMillDataSheet(Document):
 			se.save()
 			se.submit()
 			self.db_set('stock_entry',se.name)
-			# batch = None
-			# for row in self.packaging:
-			# 	batch_name = frappe.db.sql("""
-			# 		SELECT sed.batch_no from `tabStock Entry` se LEFT JOIN `tabStock Entry Detail` sed on (se.name = sed.parent)
-			# 		WHERE 
-			# 			se.name = '{name}'
-			# 			and (sed.t_warehouse != '' or sed.t_warehouse IS NOT NULL) 
-			# 			and sed.qty = {qty}
-			# 			and sed.packaging_material = '{packaging_material}'
-			# 			and sed.packing_size = '{packing_size}'
-			# 			and sed.no_of_packages = {no_of_packages}""".format(
-			# 				name=se.name,
-			# 				qty=row.qty,
-			# 				packaging_material=row.packaging_material,
-			# 				packing_size=row.packing_size,
-			# 				no_of_packages=row.no_of_packages,
-			# 			))
-			# 	if batch_name:
-			# 		batch = batch_name[0][0] or ''
+			batch = None
+			for row in self.packaging:
+				batch_name = frappe.db.sql("""
+					SELECT sed.batch_no from `tabStock Entry` se LEFT JOIN `tabStock Entry Detail` sed on (se.name = sed.parent)
+					WHERE 
+						se.name = '{name}'
+						and (sed.t_warehouse != '' or sed.t_warehouse IS NOT NULL) 
+						and sed.qty = {qty}
+						and sed.packaging_material = '{packaging_material}'
+						and sed.packing_size = '{packing_size}'
+						and sed.no_of_packages = {no_of_packages}""".format(
+							name=se.name,
+							qty=row.qty,
+							packaging_material=row.packaging_material,
+							packing_size=row.packing_size,
+							no_of_packages=row.no_of_packages,
+						))
+				if batch_name:
+					batch = batch_name[0][0] or ''
 
-			# 	if batch:
-			# 		row.db_set('batch_no', batch)
-			# 		if self.customer_name:
-			# 			frappe.db.set_value("Batch",batch,'customer',self.customer_name)
-			# 		if self.lot_no:
-			# 			frappe.db.set_value("Batch",batch,'sample_ref_no',self.lot_no)
+				if batch:
+					row.db_set('batch_no', batch)
+					if self.customer_name:
+						frappe.db.set_value("Batch",batch,'customer',self.customer_name)
+					if self.lot_no:
+						frappe.db.set_value("Batch",batch,'sample_ref_no',self.lot_no)
 		
 	def before_cancel(self):
 		for item in self.packaging:
