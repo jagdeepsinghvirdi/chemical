@@ -154,6 +154,7 @@ def add_items_to_work_order_finish_items(self):
 		for row in self.items:
 			if row.t_warehouse and row.item_code in items:
 				data = items[row.item_code]
+				total_valuation += flt(row.valuation_rate)
 				work_order.append(
 					"finish_item",
 					{
@@ -177,7 +178,8 @@ def add_items_to_work_order_finish_items(self):
 		work_order.flags.ignore_permissions = True
 		work_order.flags.ignore_validate_update_after_submit = True
 		work_order.save()
-
+		work_order.db_set("valuation_rate", total_valuation)
+		work_order.db_set("valuation_price", total_valuation)
 
 def set_batch_no_in_quality_inspection(self):
 	for row in self.items:
