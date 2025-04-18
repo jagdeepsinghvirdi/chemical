@@ -150,7 +150,7 @@ def add_items_to_work_order_finish_items(self):
 			}
 		else:
 			items = {work_order.production_item: (100, 100, bom.batch_yield)}
-
+		total_valuation = 0
 		for row in self.items:
 			if row.t_warehouse and row.item_code in items:
 				data = items[row.item_code]
