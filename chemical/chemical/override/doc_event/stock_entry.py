@@ -47,7 +47,7 @@ def calculate_qty(self):
 
 def set_concentration_to_100_for_non_batch_item(self):
 	for row in self.items:
-		if row.item_code and not row.batch_no:
+		if row.item_code and not row.batch_no and not row.concentration:
 			row.concentration = 100
 
 
