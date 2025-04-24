@@ -95,11 +95,19 @@ frappe.query_reports["Batch Wise Balance Chemical"] = {
 		frappe.set_route("query-report", "Stock Ledger");
 	},
 };
-function view_stock_leder_report(item_code, filter_company,from_date, to_date, batch_no) {
+function view_stock_leder_report(item_code, filter_company, from_date, to_date, batch_no) {
 	let fiscal_year = erpnext.utils.get_fiscal_year(frappe.datetime.get_today());
-	frappe.db.get_value("Fiscal Year", {"name": fiscal_year}, "year_start_date", function(value) {
-	window.open(window.location.hostname + "app/query-report/Stock Ledger" + "?" + "company="  + filter_company + "&"  + "from_date=" + value.year_start_date + "&" + "to_date=" + to_date + "&" + "item_code=" + encodeURIComponent(item_code)  + "&" + "batch_no=" + batch_no,"_blank")
-	// window.open(window.location.href.split('app')[0] + "app/query-report/Stock Ledger" + "?"  + "company= "  + filter_company +"&"  + "from_date=" + from_date + "&" + "to_date=" + to_date )
-	// window.open(`/app/query-report/Stock Ledger/%3Fitem_code%3D${item_code}%26company%3D %26from_date%3D${from_date}%26to_date%3D${to_date}%26batch_no%3D${batch_no}`,"_blank")
+
+	frappe.db.get_value("Fiscal Year", { "name": fiscal_year }, "year_start_date", function (value) {
+		const base_url = window.location.origin;
+		const query_string = 
+			`company=${encodeURIComponent(filter_company)}` +
+			`&from_date=${value.year_start_date}` +
+			`&to_date=${to_date}` +
+			`&item_code=${encodeURIComponent(item_code)}` +
+			`&batch_no=${encodeURIComponent(batch_no)}`;
+
+		const url = `${base_url}/app/query-report/Stock Ledger?${query_string}`;
+		window.open(url, "_blank");
 	});
 }

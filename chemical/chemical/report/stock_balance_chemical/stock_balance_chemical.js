@@ -109,14 +109,15 @@ frappe.query_reports["Stock Balance Chemical"] = {
 	}
 }
 function view_batch_wise_report(item_code, company, to_date, warehouse) {
-	window.open(window.location.hostname+ "app/query-report/Batch Wise Balance Chemical" + "/?" + "item_code=" + encodeURIComponent(item_code) + "&" + "company="+company + "&" + "to_date=" + to_date + "&" + "warehouse=" + encodeURIComponent(warehouse),"_blank")	
-	// frappe.set_route(`/app/query-report/Batch Wise Balance Chemical/?item_code=${item_code}&company=${company}`);
-	// window.open(`/app/query-report/Batch Wise Balance Chemical/%3Fitem_code%3D${item_code}%26company%3D${company}%26to_date%3D${to_date}%26warehouse%3D${warehouse}`,"_blank")
+	const url = `${window.location.origin}/app/query-report/Batch Wise Balance Chemical?item_code=${encodeURIComponent(item_code)}&company=${encodeURIComponent(company)}&to_date=${to_date}&warehouse=${encodeURIComponent(warehouse)}`;
+	window.open(url, "_blank");
 }
-function view_stock_leder_report(item_code,company, from_date, to_date, warehouse) {
-	window.open(window.location.hostname+ "app/query-report/Stock Ledger" + "/?" + "item_code=" + encodeURIComponent(item_code) + "&" + "company=" + company + "&" + "from_date=" + from_date + "&" + "to_date=" + to_date + "&" + "warehouse=" + encodeURIComponent(warehouse),"_blank")
-	// window.open(`/app/query-report/Stock Ledger/%3Fitem_code%3D${item_code}%26company%3D${company}%26from_date%3D${from_date}%26to_date%3D${to_date}%26warehouse%3D${warehouse}`,"_blank")
+
+function view_stock_leder_report(item_code, company, from_date, to_date, warehouse) {
+	const url = `${window.location.origin}/app/query-report/Stock Ledger?item_code=${encodeURIComponent(item_code)}&company=${encodeURIComponent(company)}&from_date=${from_date}&to_date=${to_date}&warehouse=${encodeURIComponent(warehouse)}`;
+	window.open(url, "_blank");
 }
+
 $(window).on("load resize scroll",function(){
     setTimeout(function(){
 		
