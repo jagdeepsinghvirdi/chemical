@@ -399,13 +399,13 @@ def cal_target_yield_cons(self):
 
 		# List of item_code from items table
 		items_list = [row.item_code for row in self.items]
-
+		frappe.throw(f"{items_list}")
 		# Check if items list has frm.doc.based_on value
 		finished_qty = 0
 		if self.based_on in items_list: 
 			for row in self.items:
 				if row.t_warehouse and row.is_finished_item:
 					finished_qty += row.qty
-					row.batch_yield = flt(row.qty / item_map[self.based_on]['qty'])
+					row.batch_yield = flt(row.qty / item_map[self.based_on]['qty']) * (row.get("concentration",100) / 100)
 
-		self.db_set('batch_yield', flt(finished_qty / item_map[self.based_on]['qty']))
+		self.db_set('batch_yield', flt(finished_qty / item_map[self.based_on]['qty']) * (self.concentration / 100))
