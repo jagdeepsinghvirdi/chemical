@@ -399,7 +399,6 @@ def cal_target_yield_cons(self):
 
 		# List of item_code from items table
 		items_list = [row.item_code for row in self.items]
-		frappe.throw(f"{items_list}")
 		# Check if items list has frm.doc.based_on value
 		finished_qty = 0
 		if self.based_on in items_list: 
