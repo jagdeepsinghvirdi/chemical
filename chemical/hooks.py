@@ -56,7 +56,7 @@ override_doctype_class = {
 
 override_whitelisted_methods = {
 	# "erpnext.manufacturing.doctype.bom_update_tool.bom_update_tool.enqueue_update_cost": "chemical.chemical.whitelisted_method.bom.enqueue_update_cost",
-	"erpnext.stock.doctype.stock_reconciliation.stock_reconciliation.get_stock_balance_for": "chemical.chemical.whitelisted_method.stock_reconciliation.get_stock_balance_for",
+	# "erpnext.stock.doctype.stock_reconciliation.stock_reconciliation.get_stock_balance_for": "chemical.chemical.whitelisted_method.stock_reconciliation.get_stock_balance_for",
     "erpnext.controllers.stock_controller.make_quality_inspections":"chemical.chemical.whitelisted_method.stock_controller.make_quality_inspections",
     "erpnext.manufacturing.doctype.work_order.work_order.make_stock_entry": "chemical.chemical.override.doctype.work_order.make_stock_entry",
     "erpnext.manufacturing.doctype.work_order.work_order.make_work_order": "chemical.chemical.override.doctype.work_order.make_work_order",
