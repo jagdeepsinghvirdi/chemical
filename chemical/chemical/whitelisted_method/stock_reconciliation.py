@@ -1,6 +1,8 @@
 import frappe
 from erpnext.stock.utils import get_stock_balance, get_incoming_rate
 from erpnext.stock.doctype.batch.batch import get_batch_qty
+from frappe.utils import flt
+
 @frappe.whitelist()
 def get_stock_balance_for(item_code, warehouse,
 	posting_date, posting_time, batch_no=None, with_valuation_rate= True):
@@ -28,6 +30,7 @@ def get_stock_balance_for(item_code, warehouse,
 		rate = get_incoming_rate({
 				"item_code": item_code,
 				"warehouse": warehouse,
+				"qty": flt(qty) * -1,
 				"posting_date": posting_date,
 				"posting_time": posting_time,
 				"batch_no": batch_no
