@@ -10,7 +10,7 @@ def before_naming(self, method):
 def add_manufacturing_date_and_posting_date(self):
     if self.reference_doctype and self.reference_name:
         doc = frappe.get_doc(self.reference_doctype, self.reference_name)
-        self.manufacturing_date = self.get("posting_date") or nowdate()
+        self.manufacturing_date = doc.get("posting_date") or nowdate()
     
     if not self.manufacturing_date:
         self.manufacturing_date = nowdate()
