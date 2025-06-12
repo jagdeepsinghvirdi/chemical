@@ -237,6 +237,7 @@ class BallMillDataSheet(Document):
 				})
 
 			se.save()
+			se.flags.ignore_validate = True
 			se.submit()
 			self.db_set('stock_entry',se.name)
 			batch = None
