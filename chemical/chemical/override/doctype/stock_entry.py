@@ -563,10 +563,10 @@ class StockEntry(_StockEntry):
 		"""
 		production_item, wo_qty, finished_items = None, 0, []
 
-		wo_details = frappe.db.get_value("Work Order", self.work_order, ["production_item", "qty"])
+		wo_details = frappe.db.get_value("Work Order", self.work_order, ["production_item", "qty","is_multiple_item"])
 		
 		if wo_details:
-			production_item, wo_qty = wo_details
+			production_item, wo_qty , is_multiple_item = wo_details
 
 			# Finbyz Changes for bom multi doc
 			bom_multi_doc = frappe.get_doc("BOM", frappe.db.get_value("Work Order" , self.work_order , "bom_no"))
@@ -603,7 +603,7 @@ class StockEntry(_StockEntry):
 				exc=FinishedGoodError,
 			)
 
-		if self.purpose == "Manufacture":
+		if self.purpose == "Manufacture" and not is_multiple_item:
 			if len(set(finished_items)) > 1:
 				frappe.throw(
 					msg=_("Multiple items cannot be marked as finished item"),
@@ -619,7 +619,7 @@ class StockEntry(_StockEntry):
 			allowed_qty = wo_qty + ((allowance_percentage / 100) * wo_qty)
 
 			# No work order could mean independent Manufacture entry, if so skip validation
-			if self.work_order and self.fg_completed_qty > allowed_qty:
+			if self.work_order and float(self.fg_completed_qty) > allowed_qty:
 				frappe.throw(
 					_("For quantity {0} should not be greater than allowed quantity {1}").format(
 						flt(self.fg_completed_qty), allowed_qty
