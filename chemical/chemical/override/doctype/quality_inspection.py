@@ -1,7 +1,34 @@
 import frappe
-from erpnext.stock.doctype.quality_inspection.quality_inspection import QualityInspection as _QualityInspection # type: ignore
+from erpnext.stock.doctype.quality_inspection.quality_inspection import QualityInspection as _QualityInspection
 
 class QualityInspection(_QualityInspection):
+	def set_child_row_reference(self):
+		if self.child_row_reference:
+			return
+
+		if not (self.reference_type and self.reference_name):
+			return
+
+		doctype = self.reference_type + " Item"
+		if self.reference_type == "Stock Entry":
+			doctype = "Stock Entry Detail"
+
+		if self.reference_type == "Outward Sample":
+				doctype = 'Outward Sample Detail'
+
+		child_row_references = frappe.get_all(
+			doctype,
+			filters={"parent": self.reference_name, "item_code": self.item_code},
+			pluck="name",
+		)
+
+		if not child_row_references:
+			return
+
+		if len(child_row_references) == 1:
+			self.child_row_reference = child_row_references[0]
+		else:
+			self.distribute_child_row_reference(child_row_references)
 	def update_qc_reference(self):
 		quality_inspection = self.name if self.docstatus == 1 else ""
 
@@ -35,8 +62,6 @@ class QualityInspection(_QualityInspection):
 
 			if self.reference_type == "Outward Sample":
 				doctype = 'Outward Sample Detail'
-				
-			
 
 			if self.reference_type and self.reference_name:
 				conditions = ""
