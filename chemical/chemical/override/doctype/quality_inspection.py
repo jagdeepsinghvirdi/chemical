@@ -29,8 +29,8 @@ class QualityInspection(_QualityInspection):
 			self.child_row_reference = child_row_references[0]
 		else:
 			self.distribute_child_row_reference(child_row_references)
-	def update_qc_reference(self):
-		quality_inspection = self.name if self.docstatus == 1 else ""
+	def update_qc_reference(self,remove_reference=False):
+		quality_inspection = self.name if self.docstatus < 2 and not remove_reference else ""
 
 		if self.reference_type == "Job Card":
 			if self.reference_name:
