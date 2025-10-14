@@ -1,4 +1,3 @@
-chemical.patch.update_batch_posting_date
 chemical.patch.set_in_item_v14
 chemical.patch.delete_batch_formated_posting_date
 chemical.patch.delete_batch_formated_posting_date_from_database
