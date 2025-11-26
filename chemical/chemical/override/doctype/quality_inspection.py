@@ -9,6 +9,9 @@ class QualityInspection(_QualityInspection):
 		if not (self.reference_type and self.reference_name):
 			return
 
+		if self.reference_type == "Inward Sample":
+			return
+
 		doctype = self.reference_type + " Item"
 		if self.reference_type == "Stock Entry":
 			doctype = "Stock Entry Detail"
