@@ -19,24 +19,6 @@ cur_frm.fields_dict.taxes_and_charges.get_query = function(doc) {
 
 
 frappe.ui.form.on("Purchase Receipt", {
-    refresh: function(frm) {
-        if (frm.doc.docstatus > 0) {
-            cur_frm.add_custom_button(__("Stock Ledger Chemical"), function() {
-                frappe.route_options = {
-                    voucher_no: frm.doc.name,
-                    from_date: frm.doc.posting_date,
-                    to_date: moment(frm.doc.modified).format('YYYY-MM-DD'),
-                    company: frm.doc.company,
-                    show_cancelled_entries: frm.doc.docstatus === 2,
-                    ignore_prepared_report: true
-                };
-                frappe.set_route("query-report", "Stock Ledger Chemical");
-            }, __("View"));
-        }
-    },
-    onload_post_render: function(frm) {
-        frm.page.remove_inner_button("Stock Ledger", "View")
-    },
     validate: function(frm) {
 		frappe.db.get_value("Company", frm.doc.company, 'maintain_as_is_new', function(c) {
 			if(!c.maintain_as_is_new) {

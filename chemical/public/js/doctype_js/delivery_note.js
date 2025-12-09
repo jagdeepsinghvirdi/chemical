@@ -56,24 +56,6 @@ cur_frm.cscript.onload = function (frm) {
 }
 
 frappe.ui.form.on("Delivery Note", {
-    refresh: function(frm) {
-		if(frm.doc.docstatus > 0) {
-			cur_frm.add_custom_button(__("Stock Ledger Chemical"), function() {
-				frappe.route_options = {
-					voucher_no: frm.doc.name,
-					from_date: frm.doc.posting_date,
-					to_date: moment(frm.doc.modified).format('YYYY-MM-DD'),
-					company: frm.doc.company,
-					show_cancelled_entries: frm.doc.docstatus === 2,
-					ignore_prepared_report: true
-				};
-				frappe.set_route("query-report", "Stock Ledger Chemical");
-			}, __("View"));
-		}
-	},
-	onload_post_render: function(frm) {
-		frm.page.remove_inner_button("Stock Ledger", "View")
-	},
     onload : function (frm) {
         if (frm.doc.items && frm.doc.__islocal){
             frm.doc.items.forEach(function (d) {
