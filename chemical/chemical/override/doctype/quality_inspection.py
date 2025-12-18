@@ -1,39 +1,43 @@
 import frappe
-from erpnext.stock.doctype.quality_inspection.quality_inspection import QualityInspection as _QualityInspection
+from erpnext.stock.doctype.quality_inspection.quality_inspection import QualityInspection as _QualityInspection # type: ignore
 
 class QualityInspection(_QualityInspection):
 	def set_child_row_reference(self):
 		if self.child_row_reference:
 			return
-
-		if not (self.reference_type and self.reference_name):
-			return
-
 		if self.reference_type == "Inward Sample":
+			return
+		if not (self.reference_type and self.reference_name):
 			return
 
 		doctype = self.reference_type + " Item"
 		if self.reference_type == "Stock Entry":
 			doctype = "Stock Entry Detail"
-
+   
 		if self.reference_type == "Outward Sample":
 				doctype = 'Outward Sample Detail'
+    
+		child_doc = frappe.qb.DocType(doctype)
+		qi_doc = frappe.qb.DocType("Quality Inspection")
 
-		child_row_references = frappe.get_all(
-			doctype,
-			filters={"parent": self.reference_name, "item_code": self.item_code},
-			pluck="name",
-		)
+		child_row_references = (
+			frappe.qb.from_(child_doc)
+			.left_join(qi_doc)
+			.on(child_doc.name == qi_doc.child_row_reference)
+			.select(child_doc.name)
+			.where(
+				(child_doc.item_code == self.item_code)
+				& (child_doc.parent == self.reference_name)
+				& (child_doc.docstatus < 2)
+				& (qi_doc.name.isnull())
+			)
+			.orderby(child_doc.idx)
+		).run(pluck=True)
 
-		if not child_row_references:
-			return
-
-		if len(child_row_references) == 1:
+		if len(child_row_references):
 			self.child_row_reference = child_row_references[0]
-		else:
-			self.distribute_child_row_reference(child_row_references)
 	def update_qc_reference(self,remove_reference=False):
-		quality_inspection = self.name if self.docstatus < 2 and not remove_reference else ""
+		quality_inspection = self.name if self.docstatus == 1 else ""
 
 		if self.reference_type == "Job Card":
 			if self.reference_name:
@@ -65,6 +69,11 @@ class QualityInspection(_QualityInspection):
 
 			if self.reference_type == "Outward Sample":
 				doctype = 'Outward Sample Detail'
+
+			if self.reference_type == "Inward Sample":
+				doctype = 'Inward Sample'
+				
+			
 
 			if self.reference_type and self.reference_name:
 				conditions = ""
