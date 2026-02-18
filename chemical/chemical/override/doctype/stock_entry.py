@@ -126,8 +126,15 @@ class StockEntry(_StockEntry):
 					)
 				)
 	def validate_fg_completed_qty(self):
-		if self.purpose not in ["Manufacture","Material Transfer for Manufacture","Send to Subcontractor","Disassemble","Material Consumption for Manufacture"]
+		if self.purpose not in [
+			"Manufacture",
+			"Material Transfer for Manufacture",
+			"Send to Subcontractor",
+			"Disassemble",
+			"Material Consumption for Manufacture",
+		]:
 			return
+
 		item_wise_qty = {}
 		if self.purpose == "Manufacture" and self.work_order:
 			for d in self.items:
