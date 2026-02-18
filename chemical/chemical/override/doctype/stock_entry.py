@@ -2,7 +2,7 @@ import frappe
 from frappe import _
 from frappe.utils import flt, cint
 from erpnext.stock.doctype.stock_entry.stock_entry import FinishedGoodError, StockEntry as _StockEntry
-from frappe.utils import cstr
+from frappe.utils import cstr ,flt
 
 
 # TODO: need to check with default function
@@ -147,7 +147,7 @@ class StockEntry(_StockEntry):
 		if self.process_loss_qty:
 			total += flt(self.process_loss_qty, precision)
 
-		if self.fg_completed_qty != total:
+		if self.fg_completed_qty != flt(total):
 			frappe.throw(
 				_(
 					"The finished product quantity {0} and For Quantity {1} cannot be different"
