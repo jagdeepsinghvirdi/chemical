@@ -10,26 +10,15 @@ authors = [
     { name = "Finbyz Tech Pvt Ltd" }
 ]
 readme = "README.md"
-license = { text = "GPL-3.0-only" }
 requires-python = ">=3.10"
-
-dependencies = [
-    # Keep empty if Frappe manages deps
-]
-
-[project.urls]
-Homepage = "https://github.com/finbyz/chemical"
+dependencies = []
 
 [tool.setuptools]
 packages = ["chemical"]
 
 [tool.setuptools.package-data]
-chemical = ["**/*.json", "**/*.html", "**/*.js", "**/*.css"]
+chemical = ["**/*.json", "**/*.js", "**/*.html", "**/*.css"]
 
-[tool.black]
-line-length = 88
-target-version = ["py310"]
-
-[tool.isort]
-profile = "black"
-
+# ✅ REQUIRED FOR BENCH (Frappe v16)
+[tool.bench.frappe-dependencies]
+frappe = ">=16.0.0,<17.0.0"
