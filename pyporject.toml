@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chemical"
+version = "0.0.1"
+description = "Custom App for Chemical Industry"
+authors = [
+    { name = "Finbyz Tech Pvt Ltd" }
+]
+readme = "README.md"
+license = { text = "GPL-3.0-only" }
+requires-python = ">=3.10"
+
+dependencies = [
+    # Keep empty if Frappe manages deps
+]
+
+[project.urls]
+Homepage = "https://github.com/finbyz/chemical"
+
+[tool.setuptools]
+packages = ["chemical"]
+
+[tool.setuptools.package-data]
+chemical = ["**/*.json", "**/*.html", "**/*.js", "**/*.css"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.isort]
+profile = "black"
+
