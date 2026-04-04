@@ -108,12 +108,12 @@ frappe.query_reports["Stock Balance Chemical"] = {
 		return value;
 	}
 }
-function view_batch_wise_report(item_code, company, to_date, warehouse) {
+window.view_batch_wise_report = function(item_code, company, to_date, warehouse) {
 	const url = `${window.location.origin}/app/query-report/Batch Wise Balance Chemical?item_code=${encodeURIComponent(item_code)}&company=${encodeURIComponent(company)}&to_date=${to_date}&warehouse=${encodeURIComponent(warehouse)}`;
 	window.open(url, "_blank");
 }
 
-function view_stock_leder_report(item_code, company, from_date, to_date, warehouse) {
+window.view_stock_leder_report = function(item_code, company, from_date, to_date, warehouse) {
 	const url = `${window.location.origin}/app/query-report/Stock Ledger?item_code=${encodeURIComponent(item_code)}&company=${encodeURIComponent(company)}&from_date=${from_date}&to_date=${to_date}&warehouse=${encodeURIComponent(warehouse)}`;
 	window.open(url, "_blank");
 }

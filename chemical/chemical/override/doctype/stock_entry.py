@@ -126,6 +126,8 @@ class StockEntry(_StockEntry):
 					)
 				)
 	def validate_fg_completed_qty(self):
+		if self.purpose != "Manufacture":
+			return
 		item_wise_qty = {}
 		if self.purpose == "Manufacture" and self.work_order:
 			for d in self.items:

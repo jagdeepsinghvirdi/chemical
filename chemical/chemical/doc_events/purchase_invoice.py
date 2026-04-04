@@ -10,7 +10,8 @@ def onload(self,method):
     quantity_price_to_qty_rate(self)
 
 def before_validate(self,method):
-	purchase_cal_rate_qty(self)
+    pass
+	# purchase_cal_rate_qty(self)
 
 def before_submit(self, method):
 	update_item_price_history(self)

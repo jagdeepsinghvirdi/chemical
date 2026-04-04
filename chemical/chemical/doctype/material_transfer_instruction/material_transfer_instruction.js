@@ -92,28 +92,52 @@ frappe.ui.form.on('Material Transfer Instruction', {
 		}
 	},
 
-	set_serial_no: function(frm, cdt, cdn, callback) {
-		var d = frappe.model.get_doc(cdt, cdn);
-		if(!d.item_code && !d.s_warehouse && !d.qty) return;
-		var	args = {
-			'item_code'	: d.item_code,
-			'warehouse'	: cstr(d.s_warehouse),
-			'stock_qty'		: d.transfer_qty
-		};
-		frappe.call({
-			method: "erpnext.stock.get_item_details.get_serial_no",
-			args: {"args": args},
-			callback: function(r) {
-				if (!r.exe){
-					frappe.model.set_value(cdt, cdn, "serial_no", r.message);
-				}
+	// set_serial_no: function(frm, cdt, cdn, callback) {
+	// 	var d = frappe.model.get_doc(cdt, cdn);
+	// 	if(!d.item_code && !d.s_warehouse && !d.qty) return;
+	// 	var	args = {
+	// 		'item_code'	: d.item_code,
+	// 		'warehouse'	: cstr(d.s_warehouse),
+	// 		'stock_qty'		: d.transfer_qty
+	// 	};
+	// 	frappe.call({
+	// 		method: "erpnext.stock.get_item_details.get_serial_no",
+	// 		args: {"args": args},
+	// 		callback: function(r) {
+	// 			if (!r.exe){
+	// 				frappe.model.set_value(cdt, cdn, "serial_no", r.message);
+	// 			}
 
-				if (callback) {
-					callback();
-				}
-			}
-		});
-	},
+	// 			if (callback) {
+	// 				callback();
+	// 			}
+	// 		}
+	// 	});
+	// },
+	set_serial_no: function(frm, cdt, cdn, callback) {
+    var d = frappe.model.get_doc(cdt, cdn);
+    if (!d.item_code || !d.s_warehouse || !d.transfer_qty) return;
+
+    frappe.call({
+        method: "erpnext.stock.get_item_details.get_serial_no",
+        args: {
+            _args: JSON.stringify({
+                item_code: d.item_code,
+                warehouse: d.s_warehouse,
+                stock_qty: d.transfer_qty
+            })
+        },
+        callback: function(r) {
+            if (!r.exc) {
+                frappe.model.set_value(cdt, cdn, "serial_no", r.message);
+            }
+
+            if (callback) {
+                callback();
+            }
+        }
+    });
+},
 
 	set_basic_rate: function(frm, cdt, cdn) {
 		const item = locals[cdt][cdn];

@@ -95,7 +95,7 @@ frappe.query_reports["Batch Wise Balance Chemical"] = {
 		frappe.set_route("query-report", "Stock Ledger");
 	},
 };
-function view_stock_leder_report(item_code, filter_company, from_date, to_date, batch_no) {
+window.view_stock_leder_report = function (item_code, filter_company, from_date, to_date, batch_no) {
 	let fiscal_year = erpnext.utils.get_fiscal_year(frappe.datetime.get_today());
 
 	frappe.db.get_value("Fiscal Year", { "name": fiscal_year }, "year_start_date", function (value) {

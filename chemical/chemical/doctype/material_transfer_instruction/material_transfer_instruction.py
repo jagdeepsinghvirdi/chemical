@@ -206,9 +206,17 @@ class MaterialTransferInstruction(StockController):
 		scrap_material_cost = 0.0
 		fg_basic_rate = 0.0
 
+		from frappe.utils import nowtime
+
 		for d in self.get('items'):
-			# if d.t_warehouse: fg_basic_rate = flt(d.basic_rate)
 			args = self.get_args_for_incoming_rate(d)
+
+			# ✅ Ensure mandatory fields for V16
+			if not args.get("posting_date"):
+				args["posting_date"] = self.posting_date
+
+			if not args.get("posting_time"):
+				args["posting_time"] = self.posting_time or nowtime()
 
 			# get basic rate
 			if not d.bom_no:
@@ -217,7 +225,10 @@ class MaterialTransferInstruction(StockController):
 					if basic_rate > 0:
 						d.basic_rate = basic_rate
 
-				d.basic_amount = flt(flt(d.transfer_qty) * flt(d.basic_rate), d.precision("basic_amount"))
+				d.basic_amount = flt(
+					flt(d.transfer_qty) * flt(d.basic_rate),
+					d.precision("basic_amount")
+				)
 
 	def update_valuation_rate(self):
 		for d in self.get("items"):
@@ -228,6 +239,7 @@ class MaterialTransferInstruction(StockController):
 	def set_total_amount(self):
 		self.total_amount = sum([flt(item.amount) for item in self.get("items")])
 
+	@frappe.whitelist()
 	def get_item_details(self, args=None, for_update=False):
 		item = frappe.db.sql("""select i.name, i.stock_uom, i.description, i.image, i.item_name, i.item_group,
 				i.has_batch_no, i.sample_quantity, i.has_serial_no,
@@ -285,7 +297,7 @@ class MaterialTransferInstruction(StockController):
 		# self.validate_work_order()
 
 		if not self.posting_date or not self.posting_time:
-			frappe.throw(_("Posting date and posting time is mandatory"))
+			frappe.msgprint(_("Posting date and posting time is mandatory"))
 
 		self.set_work_order_details()
 
