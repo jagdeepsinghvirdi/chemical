@@ -1,9 +1,9 @@
 [project]
-name = "exim"
+name = "chemical"
 authors = [
     { name = "Finbyz", email = "info@finbyz.tech"}
 ]
-description = "custom app for exim module"
+description = "custom app for chemical module"
 requires-python = ">=3.10"
 readme = "README.md"
 dynamic = ["version"]
